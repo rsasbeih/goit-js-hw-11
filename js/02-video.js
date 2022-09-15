@@ -14,4 +14,4 @@ if (currentTime) {
   player.setCurrentTime(currentTime);
 }
 
-player.on('timeupdate', throttle(onTimeUpDate, 500));
+player.on('timeupdate', throttle(onTimeUpDate, 1000));
