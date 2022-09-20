@@ -5,7 +5,7 @@ const input = document.querySelector(".search");
 const hits = document.querySelector(".gallery");
 const form = document.querySelector(".search-form");
 const loadMore = document.querySelector(".load-more");
-import '../css/common.css';
+// Described in documentation
 import SimpleLightbox from "simplelightbox";
 import "simplelightbox/dist/simple-lightbox.min.css";
 
@@ -20,9 +20,9 @@ function onSubmit(event) {
         loadMore.style.display = "none";
         hits.innerHTML = '';
         page = 1;
-        totalHits = 0;
         getHits(input.value.trim()).then(() => {
                 loadMore.style.display = "block";
+                Notiflix.Notify.success(`Hooray! We found ${response.data.totalHits} images.`);
         });
 }
 
@@ -32,14 +32,13 @@ async function getHits(input) {
                 Notiflix.Notify.failure('Sorry, there are no images matching your search query. Please try again.');
                 return;
         }
-        Notiflix.Notify.success(`Hooray! We found ${response.data.totalHits} images.`);
+        lightbox.refresh();
         totalHits += response.data.hits;
         if (response.data.totalHits == totalHits) {
                 Notiflix.Notify.info("We're sorry, but you've reached the end of search results.");
                 loadMore.style.display = "none";
                 return;
         }
-        lightbox.refresh();
         console.log(Object.values(response));
         let results = response.data.hits;
         let markup = results.map(({
@@ -73,7 +72,7 @@ async function getHits(input) {
         </div>
               </div>
           </a>`);
-        hits.innerHTML = markup;
+        hits.insertAdjacentHTML('beforeend', markup);
 }
 function loadMoreImages(event) {
         event.preventDefault();
